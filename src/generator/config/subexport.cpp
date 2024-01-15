@@ -909,6 +909,16 @@ std::string proxyToSurge(std::vector<Proxy> &nodes, const std::string &base_conf
                     ini.set(real_section, "keepalive", std::to_string(x.KeepAlive));
                 ini.set(real_section, "peer", "(" + generatePeer(x) + ")");
                 break;
+           case ProxyType::Hysteria2:
+                proxy = "hysteria2, " + hostname + ", " + port + ", password=" + password;
+                if (!sni.empty()) {
+                    proxy += ", sni=" + sni;
+                } else if (!host.empty()) {
+                    proxy += ", sni=" + host;
+                }
+                if (!scv.is_undef())
+                    proxy += ", skip-cert-verify=" + scv.get_str();
+                break;
             default:
                 continue;
         }
